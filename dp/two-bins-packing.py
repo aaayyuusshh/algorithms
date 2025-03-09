@@ -20,11 +20,12 @@ absolute difference = s1 - s2 = s1-(S-s1) = -S-2s1 = S - 2s1
 - now all we need to find is s1
 - the problem becomes: find s1, the closest possible subset sum to S/2 and plug it into the derived difference formula
 '''
+
 def packing(weights):
     totalWeight = sum(weights)
     print("total weight: ", totalWeight)
     n = len(weights)
-    
+
     # dp[i][j] represents if sum j is possible upto item i
     dp = [[False for _ in range(totalWeight//2 + 1)] for _ in range(len(weights) + 1)]
 
@@ -35,33 +36,30 @@ def packing(weights):
 
     for item in range(1, n + 1):
         for runningWeight in range(1, totalWeight//2 + 1):
-
             # case 1
             if(weights[item - 1] == runningWeight):
                 dp[item][runningWeight] = True
 
             # case 2
-            if(weights[item - 1] > runningWeight):
+            elif(weights[item - 1] > runningWeight):
                 dp[item][runningWeight] = dp[item-1][runningWeight]
 
             # case 3
-            if(weights[item - 1] < runningWeight):
-                dp[item][runningWeight] = dp[item-1][weights[item - 1] - runningWeight]
+            elif(weights[item - 1] < runningWeight):
+                dp[item][runningWeight] = dp[item-1][runningWeight] or dp[item-1][runningWeight - weights[item - 1]]
 
-
-        # find the subset sum that is the closest to n/2
-        closestSubsetSum = 0
-        for runningWeight in range(totalWeight//2, -1, -1):
-            if(dp[n][runningWeight]):
-                closestSubsetSum = runningWeight
-                break
+    # find the subset sum that is the closest to n/2
+    closestSubsetSum = 0
+    for runningWeight in range(totalWeight//2, -1, -1):
+        if(dp[n][runningWeight]):
+            closestSubsetSum = runningWeight
+            break
                 
     print(f'closest subset sum: {closestSubsetSum}')
-    return (totalWeight - (2 * closestSubsetSum))
+    return totalWeight - (2 * closestSubsetSum)
 
 def main():
-    weights = [14, 1, 16, 3, 11, 12]
-    
+    weights = [9, 5,5]
     min_diff = packing(weights)    
     print("minimum possible difference:", min_diff)
 
