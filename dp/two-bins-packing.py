@@ -46,6 +46,8 @@ def packing(weights):
 
             # case 3
             elif(weights[item - 1] < runningWeight):
+                # dp = prev i can already achieve running weight so just use that OR
+                # if not, dp = see if this i can achieve running weight
                 dp[item][runningWeight] = dp[item-1][runningWeight] or dp[item-1][runningWeight - weights[item - 1]]
 
     # find the subset sum that is the closest to n/2
@@ -59,7 +61,7 @@ def packing(weights):
     return totalWeight - (2 * closestSubsetSum)
 
 def main():
-    weights = [9, 5,5]
+    weights = [9, 5, 5]
     min_diff = packing(weights)    
     print("minimum possible difference:", min_diff)
 
