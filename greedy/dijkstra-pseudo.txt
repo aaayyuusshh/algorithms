@@ -1,0 +1,59 @@
+# quick lil rapid fire pesudo-code action
+
+# high level problem: find shortest/least weight path between two given nodes in a weighted directed graph
+
+function dijkstra_shortest_path(graph, start, end):
+    # create an map that stores the shortest distance so far from source to each node
+    distancesFomSource = {}
+    # initially since no nodes are visited, all values will be infinity
+    for keys in graph: distance[keys] = infinity
+    distancesFomSource[start] = 0
+    # distanceFromSource = {A:0, B:infinity: C:infinity}
+    # entry case so we can actually enter the min heap and start processing
+    # this way we are processing the direct neighbours of the source first and advancing from there
+    minHeap.push((start, distancesFomSource[start]))
+
+    while minHeap is not empty:
+        # pop the next node closest from source
+        currNode, distanceFromSourceAtTimeOfPushing = minHeap.pop()
+
+        # we know that the end node has the least weight/distance from the source at that moment
+        # the least weight path from source to end has been hit, we can break and return that path's weight
+        if currNode is end:
+            break
+
+        # this is how you avoid revisiting visited node -- crazyy mechanism tbh
+        if distanceFromSourceAtTimeOfPushing is greater than distanceFromSource[currNode]:
+            # just move on and ignore this node
+            # bc this node has a shorter distance in the distance array than the time
+            # of pushing distance indicating this node got relaxed after this push
+            # and then got popped/processed and explored
+            continue
+
+        # visit all neighbours of current node and perform relaxation on neighbours
+        for (neighbour, weight) key-value pair in graph[currNode]:
+            distanceFromSourceSoFar = distancesFomSource[neighbour]
+            newDistanceFromSource = weight + distancesFomSource[currNode]
+
+            # relaxation
+            if(distanceFromSourceSoFar > newDistanceFromSource):
+                # this new path to get to the neighbour from source is less than the previously expolored path
+                # update the distanceFromSource map to have this new distance for the neighbour key
+                distancesFomSource[neighbour] = newDistanceFromSource
+                minHeap.push((neighbour, newDistanceFromSource)
+
+    return distance[end]
+
+
+# sample input or what not
+# a sample graph where keys are nodes (cities) and the values are neighbors with travel costs.
+graph = {
+    'A': {'B': 1, 'C': 4},
+    'B': {'A': 1, 'C': 2, 'D': 5},
+    'C': {'A': 4, 'B': 2, 'D': 1},
+    'D': {'B': 5, 'C': 1}
+}
+start_city = 'A'
+end_city = 'D'
+
+dijkstra_shortest_path(graph, start_city, end_city)
